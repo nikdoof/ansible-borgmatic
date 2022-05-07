@@ -1,0 +1,18 @@
+{
+    "extends": [
+        ":enableRenovate",
+        "config:base",
+        ":enablePreCommit",
+        ":disableRateLimiting"
+    ],
+    "timezone": "UTC",
+    "dependencyDashboard": true,
+    "dependencyDashboardAutoclose": false,
+    "prCreation": "not-pending",
+    "suppressNotifications": [
+        "prIgnoreNotification"
+    ],
+    "assigneesFromCodeOwners": true,
+    "rebaseWhen": "conflicted",
+    "stabilityDays": 3
+}

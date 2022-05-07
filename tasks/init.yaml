@@ -1,0 +1,12 @@
+---
+- name: Initialize borg check_repositories
+  ansible.builtin.command: "/usr/local/bin/borgmatic init --encryption repokey"  # noqa 301
+  no_log: true
+  async: 300
+  poll: 0
+- name: Enable borgmatic.timer
+  ansible.builtin.systemd:
+    name: borgmatic.timer
+    enabled: true
+    masked: false
+    state: started

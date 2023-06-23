@@ -7,12 +7,12 @@
     group: root
     mode: "0700"
 - name: Write borgmatic config
-  template:
-    src: config.yaml.j2
+  copy:
     dest: /etc/borgmatic/config.yaml
     owner: root
     group: root
     mode: "0600"
+    content: "{{ borgmatic_config | to_nice_yaml( width=50, explicit_start=True, explicit_end=True) }}"
 - name: Create /root/.borgmatic folder
   ansible.builtin.file:
     path: /root/.borgmatic

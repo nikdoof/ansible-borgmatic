@@ -1,9 +1,26 @@
 ---
+- name: Get borg target host SSH host key
+  ansible.builtin.command: "ssh-keyscan -H {{ item.split('@')[1].split(':')[0] }}"
+  loop: "{{ borgmatic_config['location']['repositories'] }}"
+  when:
+    - "'location' in borgmatic_config"
+    - "'repositories' in borgmatic_config['location']"
+  register: _borgmatic_ssh_host_keys
+
+- name: Add SSH key to known hosts
+  ansible.builtin.known_hosts:
+    path: /etc/ssh/ssh_known_hosts
+    name: "{{ item.item.split('@')[1].split(':')[0] }}"
+    key: "{{ item.stdout }}"
+  loop: "{{ _borgmatic_ssh_host_keys.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+
 - name: Initialize borg check_repositories
-  ansible.builtin.command: "/usr/local/bin/borgmatic init --encryption repokey"  # noqa 301
-  no_log: true
-  async: 300
-  poll: 0
+  ansible.builtin.shell: "borgmatic init --encryption repokey"
+  environment: 
+      PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
+
 - name: Enable borgmatic.timer
   ansible.builtin.systemd:
     name: borgmatic.timer

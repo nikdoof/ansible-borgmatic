@@ -1,17 +1,21 @@
 ---
 - name: Install BorgBackup
   ansible.builtin.package:
-    name: "{{ packages }}"
-    state: installed
-  vars:
-    packages:
-      - borgbackup
-- name: Install Borgmatic
+    name: borgbackup
+    state: present
+
+- name: Install Borgmatic (Pip)
   ansible.builtin.pip:
-    name: "{{ packages }}"
-  vars:
-    packages:
-      - borgmatic
+    name: borgmatic
+  when:
+    - borgmatic_install_from_pip | default(false)
+
+- name: Install Borgmatic (Package)
+  ansible.builtin.package:
+    name: borgmatic
+  when:
+    - borgmatic_install_from_package | default(false)
+
 - name: Add borgmatic systemd units
   ansible.builtin.copy:
     src: "systemd/{{ item }}"
@@ -23,3 +27,5 @@
   loop:
     - borgmatic.service
     - borgmatic.timer
+  when:
+    - borgmatic_install_from_pip | default(false)

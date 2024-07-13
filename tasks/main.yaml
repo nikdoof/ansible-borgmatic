@@ -1,4 +1,9 @@
 ---
-- include: install.yaml
-- include: config.yaml
-- include: init.yaml
+- name: Borgmatic - Get OS specific vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "os/{{ ansible_os_family }}/{{ ansible_distribution_major_version }}.yaml"
+    - "os/{{ ansible_os_family }}.yaml"
+- include_tasks: install.yaml
+- include_tasks: config.yaml
+- include_tasks: init.yaml

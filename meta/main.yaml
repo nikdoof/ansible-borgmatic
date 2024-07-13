@@ -3,7 +3,7 @@ allow_duplicates: false
 
 galaxy_info:
   role_name: borgmatic
-  author: Andrew Williams
+  author: nikdoof
   description: Installs and configures a Borgmatic
   license: MIT
 
@@ -13,3 +13,6 @@ galaxy_info:
     - name: EL
       versions:
         - 8
+    - name: Debian
+      versions:
+        - bookworm

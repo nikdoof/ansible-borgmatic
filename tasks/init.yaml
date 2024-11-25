@@ -2,6 +2,8 @@
 - name: Get borg target host SSH host key
   ansible.builtin.command: "ssh-keyscan -H {{ item.split('@')[1].split(':')[0] }}"
   loop: "{{ borgmatic_config['location']['repositories'] }}"
+  check_mode: false
+  changed_when: false
   when:
     - "'location' in borgmatic_config"
     - "'repositories' in borgmatic_config['location']"

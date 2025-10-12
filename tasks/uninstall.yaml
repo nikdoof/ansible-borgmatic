@@ -20,6 +20,8 @@
   ansible.builtin.package:
     name: borgmatic
     state: absent
+  when:
+    - not (borgmatic_install_from_pip | default(false))
 
 - name: Remove borgmatic configuration directory
   ansible.builtin.file:

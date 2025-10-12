@@ -4,6 +4,7 @@
     name: borgmatic.timer
     enabled: false
     state: stopped
+  failed_when: false
 
 - name: Remove borgmatic systemd units
   ansible.builtin.file:

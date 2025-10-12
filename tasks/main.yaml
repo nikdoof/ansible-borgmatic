@@ -4,6 +4,15 @@
   with_first_found:
     - "os/{{ ansible_os_family }}/{{ ansible_distribution_major_version }}.yaml"
     - "os/{{ ansible_os_family }}.yaml"
-- include_tasks: install.yaml
-- include_tasks: config.yaml
-- include_tasks: init.yaml
+
+- name: Borgmatic - Install and configure
+  when: borgmatic_enabled | default(true)
+  block:
+    - include_tasks: install.yaml
+    - include_tasks: config.yaml
+    - include_tasks: init.yaml
+
+- name: Borgmatic - Uninstall and clean up
+  when: not borgmatic_enabled | default(true)
+  block:
+    - include_tasks: uninstall.yaml

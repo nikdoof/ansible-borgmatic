@@ -1,4 +1,6 @@
 ---
+borgmatic_enabled: true
+
 borgmatic_ssh_keys: []
 
 borgmatic_config:

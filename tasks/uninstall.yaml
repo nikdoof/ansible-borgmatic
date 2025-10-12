@@ -1,0 +1,33 @@
+---
+- name: Disable borgmatic.timer if installed
+  ansible.builtin.systemd:
+    name: borgmatic.timer
+    enabled: false
+    masked: true
+    state: stopped
+
+- name: Remove borgmatic systemd units
+  ansible.builtin.file:
+    path: "/etc/systemd/system/{{ item }}"
+    state: absent
+  loop:
+    - borgmatic.service
+    - borgmatic.timer
+  when:
+    - borgmatic_install_from_pip | default(false)
+  notify: reload systemd
+
+- name: Uninstall borgmatic package
+  ansible.builtin.package:
+    name: borgmatic
+    state: absent
+
+- name: Remove borgmatic configuration directory
+  ansible.builtin.file:
+    path: "/etc/borgmatic"
+    state: absent
+
+- name: Remove borgmatic files in the root user home
+  ansible.builtin.file:
+    path: "/root/.borgmatic"
+    state: absent

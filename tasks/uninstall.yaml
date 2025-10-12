@@ -3,7 +3,6 @@
   ansible.builtin.systemd:
     name: borgmatic.timer
     enabled: false
-    masked: true
     state: stopped
 
 - name: Remove borgmatic systemd units

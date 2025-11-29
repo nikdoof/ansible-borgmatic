@@ -21,7 +21,7 @@
 - name: Initialize borg check_repositories
   ansible.builtin.shell: "borgmatic init --encryption repokey"
   environment:
-    PATH: "{{ ansible_env.PATH}}:/usr/local/bin"
+    PATH: "{{ ansible_facts['env'].PATH}}:/usr/local/bin"
 
 - name: Enable borgmatic.timer
   ansible.builtin.systemd:
